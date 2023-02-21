@@ -1,5 +1,4 @@
 #include "SqliteDatabase.hpp"
-#include <sstream>
 
 namespace Orm
 {
@@ -69,5 +68,37 @@ namespace Orm
             return 1;
         }
         return 0;
+    }
+
+    void SqliteDatabase::connect(const char *database_url) {
+        this->db = this->open_database(database_url, this->db);
+    }
+
+    int SqliteDatabase::delete_all(const char *table_name) {
+        std::stringstream sql; 
+        sql << "delete from " << table_name << ";";
+        return this->execute(sql.str().c_str());
+    }
+
+    int SqliteDatabase::insert(const char *table_name, int columns, const char* column_names[], const char* values[]) {
+        std::stringstream sql;
+        sql << "insert into " << table_name << " (";
+        for (int i = 0; i < columns; i++) {
+            sql << "'" << column_names[i] << "'";
+            if (i != columns - 1)
+            {
+                sql << ",";
+            }
+        }
+        sql << ") values (";
+        for (int i = 0; i < columns; i++) {
+            sql << "'" << values[i] << "'";
+            if (i != columns - 1)
+            {
+                sql << ",";
+            }
+        }
+        sql << ");";
+        return this->execute(sql.str().c_str());
     }
 }
