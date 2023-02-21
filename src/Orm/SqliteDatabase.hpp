@@ -4,6 +4,7 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <sstream>
+#include "lib/json.hpp"
 
 namespace Orm
 {
@@ -24,6 +25,8 @@ namespace Orm
         void connect(const char *database_url);
         int delete_all(const char *table_name);
         int insert(const char *table_name, int columns, const char *column_names[], const char *values[]);
+
+        nlohmann::json select(const char *table_name, int columns_num, int nums, const char *column_names[], const char *values[], int select_nums, const char *select_columns[]);
 
         sqlite3 *open_database(const char *url, sqlite3 *db);
     };
