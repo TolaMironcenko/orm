@@ -1,7 +1,8 @@
 #include "Orm.hpp"
 
-namespace Orm {
-    Orm::Orm() {
-        
+namespace Orm
+{
+    Orm::Orm()
+    {
     }
 }
