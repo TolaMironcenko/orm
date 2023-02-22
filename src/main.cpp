@@ -13,10 +13,11 @@ int main()
     const char *values[] = {"1", "tola", "tolamironcenko@gmail.com"};
     conn.insert("User", 3, columns, values);
     // conn.delete_all("User");
-    const char *columnss[] = {"id", "name"};
+    // const char *columnss[] = {"id", "name"};
     const char *valuess[] = {"1", "tola"};
-    nlohmann::json userdata = conn.select("User", 3, 2, columns, valuess, 0, nullptr);
-    std::cout << userdata["email"] << "\n";
+    const char *select_columns[] = {"name"};
+    nlohmann::json user_username = conn.select("User", 3, 2, columns, valuess, 0, NULL, names);
+    std::cout << user_username << "\n";
     // conn.drop_table("User");
     return 0;
 }

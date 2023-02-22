@@ -125,7 +125,7 @@ namespace Orm
         return columns;
     }
 
-    nlohmann::json SqliteDatabase::select(const char *table_name, int columns_num, int nums, const char *column_names[], const char *values[], int select_nums, const char *select_columns[])
+    nlohmann::json SqliteDatabase::select(const char *table_name, int columns_num, int nums, const char *column_names[], const char *values[], int select_nums, const char *select_columns[], const char *all_columns[])
     {
         nlohmann::json result;
         sqlite3_stmt *query;
@@ -155,13 +155,23 @@ namespace Orm
             int iterator = 0;
             while ((rc = sqlite3_step(query) == SQLITE_ROW))
             {
-                nlohmann::json::object_t::value_type();
-                for (int j = 0; j < columns_num; j++)
+                if (select_nums == 0)
                 {
-                    result += nlohmann::json::object_t::value_type{std::string(column_names[j]), (const char *)sqlite3_column_text(query, j)};
-                    // std::cout << "result = " << result << "\n";
+                    for (int j = 0; j < columns_num; j++)
+                    {
+                        result += nlohmann::json::object_t::value_type{std::string(all_columns[j]), (const char *)sqlite3_column_text(query, j)};
+                        // std::cout << "result = " << result << "\n";
+                    }
+                    iterator++;
                 }
-                iterator++;
+                else
+                {
+                    for (int j = 0; j < select_nums; j++)
+                    {
+                        result += nlohmann::json::object_t::value_type{std::string(select_columns[j]), (const char *)sqlite3_column_text(query, j)};
+                        // std::cout << "result = " << result << "\n";
+                    }
+                }
             }
             // std::cout << "result = " << result << "\n";
         }
