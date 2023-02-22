@@ -128,6 +128,7 @@ namespace Orm
     nlohmann::json SqliteDatabase::select(const char *table_name, int columns_num, int nums, const char *column_names[], const char *values[], int select_nums, const char *select_columns[], const char *all_columns[])
     {
         nlohmann::json result;
+        nlohmann::json res;
         sqlite3_stmt *query;
         std::stringstream sql;
         char *zErrMsg = nullptr;
@@ -160,7 +161,7 @@ namespace Orm
                     for (int j = 0; j < columns_num; j++)
                     {
                         result += nlohmann::json::object_t::value_type{std::string(all_columns[j]), (const char *)sqlite3_column_text(query, j)};
-                        // std::cout << "result = " << result << "\n";
+                        std::cout << "result = " << result << "\n";
                     }
                     iterator++;
                 }
@@ -172,9 +173,24 @@ namespace Orm
                         // std::cout << "result = " << result << "\n";
                     }
                 }
+                res += result;
+                result = nullptr;
             }
-            // std::cout << "result = " << result << "\n";
+            std::cout << "result = " << result << "\n";
         }
-        return result;
+        return res;
+    }
+
+    int SqliteDatabase::delete_from(const char *table_name, int nums, const char *column_names[], const char *values[]) {
+        std::stringstream sql;
+        sql << "delete from " << table_name << " where ";
+        for (int i = 0; i < nums; i++) {
+            sql << column_names[i] << "='" << values[i] << "'";
+            if (i < nums-1) {
+                sql << " and ";
+            }
+        }
+        // std::cout << sql.str() << '\n';
+        return this->execute(sql.str().c_str());
     }
 }

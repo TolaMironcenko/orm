@@ -9,5 +9,5 @@ include_directories(./src/Orm/)
 
 find_package(SQLite3 REQUIRED)
 
-add_executable(orm src/main.cpp src/Orm/SqliteDatabase.cpp)
+add_executable(orm src/main.cpp src/Orm/SqliteDatabase.cpp src/Orm/PostgresqlDatabase.cpp)
 target_link_libraries(orm sqlite3)

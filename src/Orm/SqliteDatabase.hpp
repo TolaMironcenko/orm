@@ -27,6 +27,7 @@ namespace Orm
         int insert(const char *table_name, int columns, const char *column_names[], const char *values[]);
 
         nlohmann::json select(const char *table_name, int columns_num, int nums, const char *column_names[], const char *values[], int select_nums, const char *select_columns[], const char *all_columns[]);
+        int delete_from(const char *table_name, int nums, const char *column_names[], const char *values[]);
 
         sqlite3 *open_database(const char *url, sqlite3 *db);
     };
